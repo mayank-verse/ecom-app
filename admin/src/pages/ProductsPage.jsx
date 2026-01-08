@@ -34,13 +34,19 @@ function ProductsPage() {
     },
   });
 
-  const updateProductMutation = useMutation({
-    mutationFn: productApi.update,
-    onSuccess: () => {
-      closeModal();
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-    },
-  });
+const updateProductMutation = useMutation({
+  mutationFn: productApi.update,
+  onSuccess: () => {
+    closeModal();
+    queryClient.invalidateQueries({ queryKey: ["products"] });
+    alert("Product updated successfully");
+  },
+  // ADD THIS BLOCK
+  onError: (error) => {
+    console.error("Update failed:", error);
+    alert(error.response?.data?.message || "Failed to update product");
+  },
+});
 
   const deleteProductMutation = useMutation({
     mutationFn: productApi.delete,
